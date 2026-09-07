@@ -61,7 +61,7 @@ export default function ChatWindow({ conversation, onClose }: ChatWindowProps) {
 
     if (!error && data) {
       const msgs = (data as unknown as MessageWithSender[]).reverse()
-      setMessages(prev => pageNum === 0 ? msgs : [...msgs, ...prev])
+      setMessages((prev: MessageWithSender[]) => pageNum === 0 ? msgs : [...msgs, ...prev])
       setHasMore(data.length === 30)
     }
     setLoading(false)
@@ -95,7 +95,7 @@ export default function ChatWindow({ conversation, onClose }: ChatWindowProps) {
           .select('*, sender:users!messages_sender_id_fkey(*)')
           .eq('id', newMsg.id)
           .single()
-        if (data) setMessages(prev => [...prev, data as unknown as MessageWithSender])
+        if (data) setMessages((prev: MessageWithSender[]) => [...prev, data as unknown as MessageWithSender])
         // Mark as read
         await supabase.from('messages').update({ read: true }).eq('id', newMsg.id)
       })
@@ -164,7 +164,7 @@ export default function ChatWindow({ conversation, onClose }: ChatWindowProps) {
         created_at: new Date().toISOString(),
         sender: currentUser as unknown as UserRow,
       }
-      setMessages(prev => [...prev, optimistic])
+      setMessages((prev: MessageWithSender[]) => [...prev, optimistic])
       setText('')
       setAudioBlob(null)
       setRecordingState('idle')
@@ -173,7 +173,7 @@ export default function ChatWindow({ conversation, onClose }: ChatWindowProps) {
       if (error) throw error
 
       // Replace optimistic
-      setMessages(prev => prev.map(m => m.id === optimistic.id ? (data as unknown as MessageWithSender) : m))
+      setMessages((prev: MessageWithSender[]) => prev.map(m => m.id === optimistic.id ? (data as unknown as MessageWithSender) : m))
 
       // Update conversation last message
       await supabase.from('conversations').update({
@@ -183,7 +183,7 @@ export default function ChatWindow({ conversation, onClose }: ChatWindowProps) {
 
     } catch {
       toast.error('Failed to send message')
-      setMessages(prev => prev.filter(m => !m.id.startsWith('optimistic-')))
+      setMessages((prev: MessageWithSender[]) => prev.filter(m => !m.id.startsWith('optimistic-')))
     } finally {
       setSending(false)
     }
