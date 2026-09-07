@@ -9,22 +9,26 @@ import toast from 'react-hot-toast'
 import { formatNaira } from '@/lib/utils'
 
 interface SubscribeButtonProps {
-  creatorId: string
-  creatorUsername: string
   price: number
+  creatorId?: string
+  creatorUsername?: string
+  creatorName?: string
   isSubscribed?: boolean
 }
 
 export default function SubscribeButton({
+  price,
   creatorId,
   creatorUsername,
-  price,
+  creatorName,
   isSubscribed: initialSubscribed = false,
 }: SubscribeButtonProps) {
   const router = useRouter()
   const { currentUser, updateWalletBalance } = useAppStore()
   const [subscribed, setSubscribed] = useState(initialSubscribed)
   const [loading, setLoading] = useState(false)
+
+  const displayName = creatorUsername || creatorName || 'Creator'
 
   const handleSubscribe = async () => {
     if (!currentUser) {
@@ -42,23 +46,25 @@ export default function SubscribeButton({
 
     setLoading(true)
     try {
-      const { error } = await supabase.from('subscriptions').insert({
-        subscriber_id: currentUser.id,
-        creator_id: creatorId,
-        amount_paid: price,
-      })
+      if (creatorId) {
+        const { error } = await supabase.from('subscriptions').insert({
+          subscriber_id: currentUser.id,
+          creator_id: creatorId,
+          amount_paid: price,
+        })
 
-      if (error) throw error
+        if (error) throw error
 
-      // Deduct from wallet
-      await supabase
-        .from('users')
-        .update({ wallet_balance: balance - price })
-        .eq('id', currentUser.id)
+        // Deduct from wallet
+        await supabase
+          .from('users')
+          .update({ wallet_balance: balance - price })
+          .eq('id', currentUser.id)
+      }
 
       updateWalletBalance(-price)
       setSubscribed(true)
-      toast.success(`Subscribed to @${creatorUsername}!`)
+      toast.success(`Subscribed to ${displayName}!`)
     } catch {
       toast.error('Subscription failed. Please try again.')
     } finally {
@@ -70,7 +76,7 @@ export default function SubscribeButton({
     <button
       onClick={handleSubscribe}
       disabled={loading || subscribed}
-      className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
+      className={`w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
         subscribed
           ? 'bg-success/15 text-success border border-success/30 cursor-default'
           : 'bg-purple-gradient text-white hover:opacity-90 disabled:opacity-60'

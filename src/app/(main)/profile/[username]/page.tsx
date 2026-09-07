@@ -328,7 +328,7 @@ export default function UserProfilePage({ params }: { params: Promise<{ username
               <p className="text-xs text-[#6b6b8a] mt-1.5">Get access to premium subscribers-only media, livestreams, and special perks.</p>
             </div>
             <div className="mt-4 pt-4 border-t border-[#1e1e32] w-full">
-              <SubscribeButton price={500} creatorName={displayedName} />
+              <SubscribeButton price={500} creatorName={displayedName} creatorId={profileUser.id} />
             </div>
           </div>
         )}
