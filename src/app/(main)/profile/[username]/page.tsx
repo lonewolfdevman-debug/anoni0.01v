@@ -40,8 +40,8 @@ export default function UserProfilePage({ params }: { params: Promise<{ username
   const [isTipOpen, setIsTipOpen] = useState(false)
   const [isRevealOpen, setIsRevealOpen] = useState(false)
   const [userPosts, setUserPosts] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [followersCount, setFollowersCount] = useState(0)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [followersCount, setFollowersCount] = useState<number>(0)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -129,7 +129,7 @@ export default function UserProfilePage({ params }: { params: Promise<{ username
           .eq('follower_id', currentUser.id)
           .eq('following_id', profileUser.id)
         setIsFollowing(false)
-        setFollowersCount(prev => Math.max(0, prev - 1))
+        setFollowersCount((prev: number) => Math.max(0, prev - 1))
         toast.success(`Unfollowed @${profileUser.username}`)
       } else {
         await supabase.from('followers').insert({
@@ -137,7 +137,7 @@ export default function UserProfilePage({ params }: { params: Promise<{ username
           following_id: profileUser.id,
         } as any)
         setIsFollowing(true)
-        setFollowersCount(prev => prev + 1)
+        setFollowersCount((prev: number) => prev + 1)
         toast.success(`Followed @${profileUser.username}`)
       }
     } catch (err) {

@@ -34,9 +34,9 @@ const iconMap = {
 }
 
 export default function NotificationsPage() {
-  const [notifs, setNotifs] = useState(mockNotifs)
+  const [notifs, setNotifs] = useState<Notif[]>(mockNotifs)
 
-  const markAllRead = () => setNotifs(n => n.map(x => ({ ...x, read: true })))
+  const markAllRead = () => setNotifs((n: Notif[]) => n.map(x => ({ ...x, read: true })))
   const unreadCount = notifs.filter(n => !n.read).length
 
   return (

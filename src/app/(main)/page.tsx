@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
@@ -191,7 +191,7 @@ export default function HomeFeed() {
           .eq('is_creator', true)
           .order('created_at', { ascending: false })
           .range(offset, offset + PAGE_SIZE - 1)
-        setCreators(prev =>
+        setCreators((prev: CreatorWithProfile[]) =>
           pageNum === 0
             ? (data?.length ? (data as unknown as CreatorWithProfile[]) : getMockCreators())
             : [...prev, ...(data as unknown as CreatorWithProfile[])]
@@ -270,7 +270,7 @@ export default function HomeFeed() {
       const tagged = (data || []).map((p: any) => ({ ...p, is_liked: likedSet.has(p.id) }))
       const result = tagged.length ? (tagged as PostWithUser[]) : (pageNum === 0 ? getMockPosts() : [])
 
-      setPosts(prev => pageNum === 0 ? result : [...prev, ...result])
+      setPosts((prev: PostWithUser[]) => pageNum === 0 ? result : [...prev, ...result])
       setHasMore(tagged.length === PAGE_SIZE)
     } catch {
       if (pageNum === 0) setPosts(getMockPosts())
@@ -323,7 +323,7 @@ export default function HomeFeed() {
             .eq('id', newPost.id)
             .single()
             .then(({ data }) => {
-              if (data) setPosts(prev => [data as unknown as PostWithUser, ...prev])
+              if (data) setPosts((prev: PostWithUser[]) => [data as unknown as PostWithUser, ...prev])
             })
         }
       })

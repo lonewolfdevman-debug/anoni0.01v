@@ -29,19 +29,19 @@ type CommentWithUser = {
 export default function PostCard({ post, onLike }: PostCardProps) {
   const { currentUser } = useAppStore()
   const router = useRouter()
-  const [liked, setLiked] = useState(post.is_liked ?? false)
-  const [likeCount, setLikeCount] = useState(post.like_count)
-  const [bookmarked, setBookmarked] = useState(post.is_bookmarked ?? false)
-  const [videoPlaying, setVideoPlaying] = useState(false)
-  const [audioPlaying, setAudioPlaying] = useState(false)
-  const [showComments, setShowComments] = useState(false)
+  const [liked, setLiked] = useState<boolean>(Boolean(post.is_liked))
+  const [likeCount, setLikeCount] = useState<number>(post.like_count ?? 0)
+  const [bookmarked, setBookmarked] = useState<boolean>(Boolean(post.is_bookmarked))
+  const [videoPlaying, setVideoPlaying] = useState<boolean>(false)
+  const [audioPlaying, setAudioPlaying] = useState<boolean>(false)
+  const [showComments, setShowComments] = useState<boolean>(false)
   const [comments, setComments] = useState<CommentWithUser[]>([])
-  const [commentText, setCommentText] = useState('')
-  const [loadingComments, setLoadingComments] = useState(false)
-  const [submittingComment, setSubmittingComment] = useState(false)
-  const [showShareMenu, setShowShareMenu] = useState(false)
-  const [shareCount, setShareCount] = useState(post.share_count)
-  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [commentText, setCommentText] = useState<string>('')
+  const [loadingComments, setLoadingComments] = useState<boolean>(false)
+  const [submittingComment, setSubmittingComment] = useState<boolean>(false)
+  const [showShareMenu, setShowShareMenu] = useState<boolean>(false)
+  const [shareCount, setShareCount] = useState<number>(post.share_count ?? 0)
+  const [showAuthModal, setShowAuthModal] = useState<boolean>(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
 
@@ -57,7 +57,7 @@ export default function PostCard({ post, onLike }: PostCardProps) {
   const handleLike = () => requireAuth(async () => {
     const newLiked = !liked
     setLiked(newLiked)
-    setLikeCount(c => newLiked ? c + 1 : c - 1)
+    setLikeCount((c: number) => newLiked ? c + 1 : c - 1)
     if (newLiked) {
       await (supabase.from('post_likes') as any).insert({ post_id: post.id, user_id: currentUser!.id })
     } else {
@@ -67,7 +67,7 @@ export default function PostCard({ post, onLike }: PostCardProps) {
   })
 
   const handleBookmark = () => requireAuth(() => {
-    setBookmarked(b => !b)
+    setBookmarked((b: boolean) => !b)
     toast.success(bookmarked ? 'Removed from bookmarks' : '🔖 Bookmarked!')
   })
 
@@ -107,7 +107,7 @@ export default function PostCard({ post, onLike }: PostCardProps) {
         .select('*, user:users(*)')
         .single()
       if (error) throw error
-      setComments(c => [data as unknown as CommentWithUser, ...c])
+      setComments((c: CommentWithUser[]) => [data as unknown as CommentWithUser, ...c])
       setCommentText('')
       toast.success('Comment posted!')
     } catch {
@@ -125,7 +125,7 @@ export default function PostCard({ post, onLike }: PostCardProps) {
       await navigator.clipboard.writeText(url)
       toast.success('Link copied!')
     }
-    setShareCount(s => s + 1)
+    setShareCount((s: number) => s + 1)
     await (supabase.from('posts') as any).update({ share_count: shareCount + 1 }).eq('id', post.id)
     setShowShareMenu(false)
   }
@@ -328,7 +328,7 @@ export default function PostCard({ post, onLike }: PostCardProps) {
           {/* Share */}
           <div style={{ position: 'relative' }}>
             <button
-              onClick={() => setShowShareMenu(s => !s)}
+              onClick={() => setShowShareMenu((s: boolean) => !s)}
               style={{
                 display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600,
                 color: '#6b6b8a', border: 'none', background: 'none', cursor: 'pointer',

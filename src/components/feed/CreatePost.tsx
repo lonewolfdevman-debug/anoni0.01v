@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useRef, useCallback } from 'react'
 import { Image as ImageIcon, Video, Mic, Radio, Eye, EyeOff, ChevronDown } from 'lucide-react'
 import Avatar from '@/components/ui/Avatar'
@@ -18,13 +18,13 @@ export default function CreatePost({ onPost }: CreatePostProps) {
   const { currentUser, isAnonymousMode } = useAppStore()
   const [caption, setCaption] = useState('')
   const [posting, setPosting] = useState(false)
-  const [anonymous, setAnonymous] = useState(isAnonymousMode)
+  const [anonymous, setAnonymous] = useState<boolean>(Boolean(isAnonymousMode))
   const [mediaFile, setMediaFile] = useState<File | null>(null)
   const [mediaPreview, setMediaPreview] = useState<string | null>(null)
   const [mediaType, setMediaType] = useState<MediaType>('text')
   const [uploading, setUploading] = useState(false)
   const [visibility, setVisibility] = useState<'public' | 'followers' | 'premium' | 'subscribers'>('public')
-  const [showVisibility, setShowVisibility] = useState(false)
+  const [showVisibility, setShowVisibility] = useState<boolean>(false)
   const [expanded, setExpanded] = useState(false)
   const photoRef = useRef<HTMLInputElement>(null)
   const videoRef = useRef<HTMLInputElement>(null)
@@ -212,7 +212,7 @@ export default function CreatePost({ onPost }: CreatePostProps) {
         {/* Visibility Picker */}
         <div style={{ position: 'relative' }}>
           <button
-            onClick={() => setShowVisibility(v => !v)}
+            onClick={() => setShowVisibility((v: boolean) => !v)}
             style={{
               display: 'flex', alignItems: 'center', gap: 4, padding: '5px 10px',
               borderRadius: 8, fontSize: 11, fontWeight: 600, color: '#a1a1b5',
@@ -254,7 +254,7 @@ export default function CreatePost({ onPost }: CreatePostProps) {
 
         {/* Anonymous toggle */}
         <button
-          onClick={() => setAnonymous(a => !a)}
+          onClick={() => setAnonymous((a: boolean) => !a)}
           style={{
             display: 'flex', alignItems: 'center', gap: 5, padding: '5px 10px',
             borderRadius: 8, fontSize: 11, fontWeight: 600,

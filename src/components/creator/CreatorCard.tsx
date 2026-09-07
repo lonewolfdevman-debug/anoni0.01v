@@ -9,24 +9,24 @@ import toast from 'react-hot-toast'
 import type { UserRow, CreatorProfile } from '@/types/database'
 
 interface CreatorCardProps {
-  creator: (UserRow | any) & { creator_profile?: CreatorProfile; is_following?: boolean; is_subscribed?: boolean }
+  creator: UserRow & { creator_profile?: CreatorProfile; is_following?: boolean; is_subscribed?: boolean }
   onSubscribe?: (creatorId: string) => void
 }
 
 export default function CreatorCard({ creator, onSubscribe }: CreatorCardProps) {
   const { currentUser } = useAppStore()
   const router = useRouter()
-  const [subscribed, setSubscribed] = useState(creator.is_subscribed ?? false)
-  const [following, setFollowing] = useState(creator.is_following ?? false)
+  const [subscribed, setSubscribed] = useState<boolean>(Boolean(creator.is_subscribed))
+  const [following, setFollowing] = useState<boolean>(Boolean(creator.is_following))
 
   const price = creator.creator_profile?.monthly_price ?? 500
   const subscribers = creator.creator_profile?.total_subscribers ?? 0
 
   const handleSubscribe = () => {
     if (!currentUser) { router.push('/signup'); return }
-    setSubscribed(s => !s)
-    toast.success(subscribed ? 'Unsubscribed' : `💎 Subscribed to ${creator.anonymous_alias}!`)
-    onSubscribe?.(creator.id)
+    setSubscribed((s: boolean) => !s)
+    toast.success(subscribed ? 'Unsubscribed' : `💎 Subscribed to ${creator.anonymous_alias || creator.username || 'Creator'}!`)
+    if (creator.id) onSubscribe?.(creator.id)
   }
 
   return (

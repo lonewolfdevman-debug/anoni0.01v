@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useAppStore } from '@/store/useAppStore'
@@ -115,7 +115,7 @@ export default function ConversationList({ activeConvId, onSelectConv, onNewChat
 
     if (newConv) {
       const conv: ConversationWithUsers = { ...newConv, other_user: user }
-      setConversations(prev => [conv, ...prev])
+      setConversations((prev: ConversationWithUsers[]) => [conv, ...prev])
       onSelectConv(conv)
     }
   }

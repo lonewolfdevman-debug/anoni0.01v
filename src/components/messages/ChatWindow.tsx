@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useAppStore } from '@/store/useAppStore'
@@ -220,7 +220,7 @@ export default function ChatWindow({ conversation, onClose }: ChatWindowProps) {
       recorder.start()
       setRecordingState('recording')
       setRecordingTime(0)
-      timerRef.current = setInterval(() => setRecordingTime(t => t + 1), 1000)
+      timerRef.current = setInterval(() => setRecordingTime((t: number) => t + 1), 1000)
     } catch {
       toast.error('Microphone access denied')
     }
@@ -541,7 +541,7 @@ export default function ChatWindow({ conversation, onClose }: ChatWindowProps) {
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8 }}>
           {/* Anonymous toggle */}
           <button
-            onClick={() => setAnonymous(a => !a)}
+            onClick={() => setAnonymous((a: boolean) => !a)}
             title={anonymous ? 'Sending as alias' : 'Sending as you'}
             style={{
               width: 36, height: 36, borderRadius: 10, border: 'none', cursor: 'pointer',
