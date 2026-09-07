@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { motion } from 'framer-motion'
 import Avatar from '@/components/ui/Avatar'
 import { useRouter } from 'next/navigation'
@@ -6,7 +6,7 @@ import { Radio, Eye } from 'lucide-react'
 import type { LivestreamRow, UserRow } from '@/types/database'
 
 interface LiveStreamCardProps {
-  stream: LivestreamRow & { creator?: UserRow }
+  stream: (LivestreamRow | any) & { creator?: any }
 }
 
 export default function LiveStreamCard({ stream }: LiveStreamCardProps) {

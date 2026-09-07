@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState } from 'react'
 import Avatar from '@/components/ui/Avatar'
 import { useAppStore } from '@/store/useAppStore'
@@ -9,7 +9,7 @@ import toast from 'react-hot-toast'
 import type { UserRow, CreatorProfile } from '@/types/database'
 
 interface CreatorCardProps {
-  creator: UserRow & { creator_profile?: CreatorProfile; is_following?: boolean; is_subscribed?: boolean }
+  creator: (UserRow | any) & { creator_profile?: CreatorProfile; is_following?: boolean; is_subscribed?: boolean }
   onSubscribe?: (creatorId: string) => void
 }
 

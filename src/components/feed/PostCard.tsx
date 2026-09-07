@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -14,7 +14,7 @@ import toast from 'react-hot-toast'
 import type { PostRow, UserRow } from '@/types/database'
 
 interface PostCardProps {
-  post: PostRow & { user: UserRow; is_liked?: boolean; is_bookmarked?: boolean }
+  post: (PostRow | any) & { user?: any; is_liked?: boolean; is_bookmarked?: boolean }
   onLike?: (postId: string, liked: boolean) => void
 }
 
@@ -23,7 +23,7 @@ type CommentWithUser = {
   content: string
   is_anonymous: boolean
   created_at: string
-  user: UserRow
+  user?: any
 }
 
 export default function PostCard({ post, onLike }: PostCardProps) {

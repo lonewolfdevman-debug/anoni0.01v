@@ -5,37 +5,37 @@ export interface UserRow {
   email?: string
   username: string
   display_name: string
-  bio: string | null
-  profile_picture: string | null
-  is_creator: boolean
-  is_verified: boolean
+  bio?: string | null
+  profile_picture?: string | null
+  is_creator?: boolean
+  is_verified?: boolean
   is_live?: boolean
-  wallet_balance: number
-  anonymous_alias: string | null
+  wallet_balance?: number
+  anonymous_alias?: string | null
   subscription_price?: number | null
   reveal_price?: number | null
   premium_status?: boolean
-  created_at: string
+  created_at?: string
 }
 
 export interface PostRow {
   id: string
   user_id: string
   post_type?: 'photo' | 'video' | 'audio' | 'text' | null
-  caption: string | null
-  media_url: string | null
+  caption?: string | null
+  media_url?: string | null
   thumbnail_url?: string | null
   duration?: number | null
   media_type?: 'photo' | 'video' | 'audio' | null
-  is_anonymous: boolean
-  visibility: 'public' | 'followers' | 'subscribers' | 'premium' | 'private'
+  is_anonymous?: boolean
+  visibility?: 'public' | 'followers' | 'subscribers' | 'premium' | 'private'
   reveal_price?: number | null
-  like_count: number
-  comment_count: number
+  like_count?: number
+  comment_count?: number
   share_count?: number
-  created_at: string
+  created_at?: string
   // joined
-  user?: UserRow
+  user?: any
   is_liked?: boolean
   is_bookmarked?: boolean
   liked_by_me?: boolean
@@ -47,20 +47,20 @@ export interface LivestreamRow {
   host_id?: string
   creator_id?: string
   room_name?: string
-  title: string
+  title?: string
   status?: string
   livekit_room?: string
   thumbnail_url?: string | null
   is_anonymous?: boolean
   is_subscriber_only?: boolean
-  viewer_count: number
+  viewer_count?: number
   is_active?: boolean
   started_at?: string
   ended_at?: string | null
   created_at?: string
   // joined
-  host?: UserRow
-  creator?: UserRow
+  host?: any
+  creator?: any
 }
 
 export interface CreatorProfile {
@@ -81,19 +81,19 @@ export interface CommentRow {
   post_id: string
   user_id: string
   content: string
-  is_anonymous: boolean
-  created_at: string
-  user?: UserRow
+  is_anonymous?: boolean
+  created_at?: string
+  user?: any
 }
 
 export interface NotificationRow {
   id: string
   user_id: string
-  actor_id: string | null
-  type: 'like' | 'comment' | 'follow' | 'tip' | 'mention' | 'subscription'
-  entity_id: string | null
-  is_anonymous: boolean
-  read: boolean
-  created_at: string
-  actor?: UserRow
+  actor_id?: string | null
+  type?: 'like' | 'comment' | 'follow' | 'tip' | 'mention' | 'subscription' | string
+  entity_id?: string | null
+  is_anonymous?: boolean
+  read?: boolean
+  created_at?: string
+  actor?: any
 }

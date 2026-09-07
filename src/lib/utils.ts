@@ -1,4 +1,4 @@
-﻿// src/lib/utils.ts
+// src/lib/utils.ts
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -6,19 +6,23 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatCount(n: number): string {
+export function formatCount(n?: number | null): string {
+  if (n === undefined || n === null || isNaN(n)) return '0'
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`
   return String(n)
 }
 
-export function formatNaira(amount: number): string {
+export function formatNaira(amount?: number | null): string {
+  if (amount === undefined || amount === null || isNaN(amount)) return '₦0'
   return `₦${amount.toLocaleString('en-NG')}`
 }
 
-export function timeAgo(date: string | Date): string {
+export function timeAgo(date?: string | Date | null): string {
+  if (!date) return 'just now'
   const now = new Date()
   const then = new Date(date)
+  if (isNaN(then.getTime())) return 'just now'
   const diff = now.getTime() - then.getTime()
   const secs = Math.floor(diff / 1000)
   const mins = Math.floor(secs / 60)
@@ -42,17 +46,20 @@ export function generateAnonymousAlias(): string {
   return `${word}${num}`
 }
 
-export function getInitials(name: string): string {
+export function getInitials(name?: string | null): string {
+  if (!name) return '?'
   return name
     .split(' ')
+    .filter(Boolean)
     .map(n => n[0])
     .join('')
     .toUpperCase()
-    .slice(0, 2)
+    .slice(0, 2) || '?'
 }
 
-export function formatDuration(seconds: number): string {
+export function formatDuration(seconds?: number | null): string {
+  if (seconds === undefined || seconds === null || isNaN(seconds)) return '0:00'
   const m = Math.floor(seconds / 60)
-  const s = seconds % 60
+  const s = Math.floor(seconds % 60)
   return `${m}:${s.toString().padStart(2, '0')}`
 }
