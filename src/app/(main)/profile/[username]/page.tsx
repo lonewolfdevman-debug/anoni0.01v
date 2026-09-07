@@ -1,5 +1,5 @@
-﻿'use client'
-import { useState, useEffect } from 'react'
+'use client'
+import { useState, useEffect, use } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle2, MessageSquare, DollarSign, Eye, EyeOff, ShieldAlert, Heart, ImageIcon, Video, Mic, Radio, Award } from 'lucide-react'
 import Avatar from '@/components/ui/Avatar'
@@ -29,7 +29,9 @@ interface ProfileUser {
   is_live: boolean
 }
 
-export default function UserProfilePage({ params }: { params: { username: string } }) {
+export default function UserProfilePage({ params }: { params: Promise<{ username: string }> | { username: string } }) {
+  const resolvedParams = 'then' in params ? use(params) : params
+  const username = resolvedParams.username
   const router = useRouter()
   const { currentUser } = useAppStore()
   const [profileUser, setProfileUser] = useState<ProfileUser | null>(null)
@@ -48,7 +50,7 @@ export default function UserProfilePage({ params }: { params: { username: string
         const { data: user, error } = await supabase
           .from('users')
           .select('*')
-          .eq('username', params.username)
+          .eq('username', username)
           .single()
 
         if (error || !user) {
@@ -111,7 +113,7 @@ export default function UserProfilePage({ params }: { params: { username: string
     }
 
     fetchProfile()
-  }, [params.username, currentUser, router])
+  }, [username, currentUser, router])
 
   const handleFollowToggle = async () => {
     if (!currentUser || !profileUser) {
