@@ -45,14 +45,18 @@ export interface PostRow {
 export interface LivestreamRow {
   id: string
   host_id?: string
+  creator_id?: string
   room_name?: string
   title: string
+  status?: string
   livekit_room?: string
   thumbnail_url?: string | null
   is_anonymous?: boolean
+  is_subscriber_only?: boolean
   viewer_count: number
   is_active?: boolean
   started_at?: string
+  ended_at?: string | null
   created_at?: string
   // joined
   host?: UserRow
@@ -63,11 +67,13 @@ export interface CreatorProfile {
   id?: string
   user_id?: string
   monthly_price?: number
+  creator_description?: string
   total_subscribers?: number
   total_earnings?: number
   subscriber_count?: number
   post_count?: number
   is_subscribed_by_me?: boolean
+  created_at?: string
 }
 
 export interface CommentRow {
